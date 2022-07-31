@@ -6,6 +6,9 @@ usage () {
     cat <<EOF
 Usage:
         macchiato key file...
+
+Dependencies:
+        python-docx2txt
 EOF
     exit 1
 }
@@ -31,8 +34,23 @@ outfile="./marks"
 [ -e $outfile ] && cp "$outfile" "${outfile}-old"
 printf "" > $outfile
 
-# loop over files
 for file in "$@"; do
+    basename=${file##*/}
+    # convert from different formats to plaintext
+    case $file in
+        *.docx)
+            stem=${basename%%.docx}
+            docx2txt "$file" "$processed/$stem"
+        ;;
+        *)
+            printf "%s\n" "hello"
+            cp "$file" "$processed/$basename"
+        ;;
+    esac
+    #TODO clean up with sed
+done
+
+for file in $processed/*; do
     mistakes=$(diff -y --suppress-common-lines "$key" "$file" | wc -l)
-    printf "${file} ${mistakes}\n" >> "$outfile"
+    printf "%s %s\n" "$file" "$mistakes" >> "$outfile"
 done
