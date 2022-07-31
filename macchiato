@@ -1,0 +1,35 @@
+#!/bin/sh
+#
+# macchiato - batch marking utility
+
+usage () {
+    cat <<EOF
+Usage:
+        macchiato key file...
+EOF
+    exit 1
+}
+
+bail () {
+    printf "Error:\t$*"
+    exit 1
+}
+
+# process arguments
+[ $# -lt 2 ] && usage
+if [ -e $1 ]; then 
+    key="$1"
+    shift
+else
+    bail "Answer key not found\n"
+fi
+
+# set up directories & records
+processed="./processed"
+[ -e $processed ] || mkdir $processed
+outfile="./marks"
+
+# loop over files
+for file in "$@"; do
+    printf "${file}\n" >> "$outfile"
+done
