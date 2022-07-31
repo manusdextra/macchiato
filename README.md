@@ -6,4 +6,4 @@ Later, when in similar situations, I would go back to the original script and ma
 
 ## Rewrite
 One day, when teaching a different exam prep class, I went looking for my script, only to find that I must have accidentally deleted it. So I decided to rewrite it from memory (and hopefully improve it in the process).
-In they year or so since first writing this shell script, I had learned a few things about test-driven development, so I took this opportunity to try out the bats testing framework [https://github.com/bats-core/bats-core] as well.
+In they year or so since first writing this shell script, I had learned a few things about test-driven development, so I took this opportunity to try out the [bats] testing framework (https://github.com/bats-core/bats-core) as well.
