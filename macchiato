@@ -28,8 +28,11 @@ fi
 processed="./processed"
 [ -e $processed ] || mkdir $processed
 outfile="./marks"
+[ -e $outfile ] && cp "$outfile" "${outfile}-old"
+printf "" > $outfile
 
 # loop over files
 for file in "$@"; do
-    printf "${file}\n" >> "$outfile"
+    mistakes=$(diff -y --suppress-common-lines "$key" "$file" | wc -l)
+    printf "${file} ${mistakes}\n" >> "$outfile"
 done

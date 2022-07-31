@@ -1,7 +1,10 @@
 setup () {
     load 'test/test_helper/bats-support/load'
     load 'test/test_helper/bats-assert/load'
+    load 'test/test_helper/bats-file/load'
+    cp test/key ./key
     key="./key"
+    output="./marks"
     touch "$key"
 }
 
@@ -28,4 +31,11 @@ teardown () {
 @test "Lots of arguments" {
     run ./macchiato $key file1 file2
     assert_success
+}
+
+@test "Plaintext" {
+    run ./macchiato $key test/student*
+    for number in 1 2 3 4; do
+        assert_file_contains marks "test/student${number} ${number}"
+    done
 }
