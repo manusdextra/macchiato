@@ -34,8 +34,8 @@ teardown () {
 }
 
 @test "Plaintext" {
-    run ./macchiato $key test/student*
+    run ./macchiato $key test/clean/student*
     for number in 1 2 3 4; do
-        assert_file_contains marks "test/student${number} ${number}"
+        assert_file_contains marks "student${number} ${number}"
     done
 }
