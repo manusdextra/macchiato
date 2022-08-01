@@ -1,3 +1,5 @@
+# vim: ft=sh
+
 setup () {
     load 'test/test_helper/bats-support/load'
     load 'test/test_helper/bats-assert/load'
@@ -35,6 +37,21 @@ teardown () {
 
 @test "Plaintext" {
     run ./macchiato $key test/clean/student*
+    for number in 1 2 3 4; do
+        assert_file_contains marks "student${number} ${number}"
+    done
+}
+
+@test "DOCx formatting" {
+    run ./macchiato $key test/dirty/student*
+    for file in ./processed/*; do
+        run wc -l $file
+        assert_output "10 $file"
+    done
+}
+
+@test "DOCx marking" {
+    run ./macchiato $key test/dirty/student*
     for number in 1 2 3 4; do
         assert_file_contains marks "student${number} ${number}"
     done
