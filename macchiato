@@ -39,18 +39,23 @@ for file in "$@"; do
     # convert from different formats to plaintext
     case $file in
         *.docx)
+            command -v docx2txt >/dev/null || bail "Please install python-docx2txt"
             stem=${basename%%.docx}
             docx2txt "$file" "$processed/$stem"
         ;;
         *)
-            printf "%s\n" "hello"
             cp "$file" "$processed/$basename"
         ;;
     esac
-    #TODO clean up with sed
 done
 
-for file in $processed/*; do
+for file in "$processed"/*; do
+    sed -i '
+        /^\s*$/d; # empty lines
+        s/^\s*\(.*\)$/\1/g; # leading whitespace
+        s/\(^[[:digit:]]\{1,2\}\).*\(\w\).*$/\1\2/g;
+        /^[^[:digit:]]/d;
+        ' "$file"
     mistakes=$(diff -y --suppress-common-lines "$key" "$file" | wc -l)
     printf "%s %s\n" "$file" "$mistakes" >> "$outfile"
 done
