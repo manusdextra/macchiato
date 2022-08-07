@@ -14,13 +14,13 @@ EOF
 }
 
 bail () {
-    printf "Error:\t$*"
+    printf "Error:\t%s" "$@"
     exit 1
 }
 
 # process arguments
 [ $# -lt 2 ] && usage
-if [ -e $1 ]; then 
+if [ -e "$1" ]; then 
     key="$1"
     shift
 else
